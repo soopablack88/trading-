@@ -12,17 +12,20 @@ order after a stop.
 ## How this relates to CLAUDE.md
 
 CLAUDE.md rules 1, 3, 7, 9, and 10 apply as written. The market orders here
-are regular-hours only and have a spread check, so they meet rule 3. Only
-rule 2 has an autopilot exception so far. Two rules still conflict with this
-strategy:
+are regular-hours only and have a spread check, so they meet rule 3. For
+rule 5, the exit plan for every position is the band: SPY is sold when a run finds it below the lower band, and SGOV is
+sold when a run finds SPY above the upper band.
 
-- Rule 4 caps a position at 10% of equity and sizes by stop distance, but this
-  strategy holds up to 100% of the account in SPY or SGOV.
-- Rule 6 halts at -3% on the day or -10% from peak, but this strategy uses a
-  5% intraday move and a 20% drop since the last run.
+The owner gave these runs exceptions (2026-09-23) to three rules:
 
-Until CLAUDE.md gives these runs exceptions to rules 4 and 6, a **LIVE** run
-that would place an order stops with status `blocked-rules` before placing
+- Rule 2: orders are placed without per-trade approval.
+- Rule 4: sizing and the 10% position cap are replaced by Step 7, which puts
+  up to 100% of investable cash in SPY or SGOV.
+- Rule 6: the -3% daily and -10% from peak halts are replaced by Step 5's
+  5% intraday and 20% since-last-run halts.
+
+If CLAUDE.md no longer has any one of these exceptions, a **LIVE** run that
+would place an order stops with status `blocked-rules` before placing
 anything. DRY_RUN is unaffected.
 
 ## Fixed parameters
