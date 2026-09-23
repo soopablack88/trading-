@@ -14,16 +14,32 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    quantity, order type, limit/stop prices, estimated cost, and the stop-loss
    plan. Place the order only after the user explicitly says yes to *that*
    order. Approval for one order does not carry over to the next.
+   **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
+   the scheduled SPY/SGOV autopilot Routine to place orders without
+   per-trade approval, and only as defined in @docs/AUTOPILOT.md: account
+   ••••7879 only, SPY and SGOV only, at most 2 orders per run,
+   `review_equity_order` first and abort on any alert. This exception
+   applies only inside a run started by that Routine. It never applies in
+   an interactive session, to any other symbol or account, or to an order
+   the procedure doesn't call for.
 3. **Limit orders by default.** No market orders outside regular hours or on
    anything with a wide spread (>0.5% of price). Use limits near the mid.
 4. **Risk per trade ≤ 1% of account equity** (the loss if the stop is hit).
    Position size = (equity × 0.01) ÷ (entry − stop). Cap any single position
    at 10% of equity and any single sector at 25%.
+   **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
+   the autopilot Routine in @docs/AUTOPILOT.md to hold up to 100% of the
+   ••••7879 account's investable cash in SPY or SGOV, sized as that file
+   defines, without the per-trade stop sizing or the 10%/25% caps.
 5. **Every position has an exit plan before entry**: a stop level (usually
    2 × ATR(14) below entry for longs) and a reason to take profit or exit.
 6. **Circuit breakers.** If the account is down 3% on the day or 10% from its
    peak, stop opening new positions and tell the user. Resume only when
    the user says so.
+   **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
+   the autopilot Routine in @docs/AUTOPILOT.md to use that file's circuit
+   breakers instead of these: skip the run if SPY moves more than 5%
+   intraday, or if the account is down more than 20% since the last run.
 7. **No leverage beyond cash.** Don't use margin borrowing. No naked short options.
    No selling puts unless the full cash to be assigned is set aside.
 8. **Check tradability and events first.** Call `get_equity_tradability` before
