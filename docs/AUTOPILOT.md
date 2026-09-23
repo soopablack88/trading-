@@ -185,10 +185,10 @@ positions. It never uses margin or other positions.
 
 1. **Strategy value:** `V = investable_cash + value(SPY) + value(IBIT) + value(SGOV)`,
    with each value = shares × last price.
-2. **Targets:** `T(SPY) = 0.80 × V` if core is ON, else 0.
-   `T(IBIT) = 0.20 × V` if crypto is ON, else 0.
-   `T(SGOV) = 0.995 × V − T(SPY) − T(IBIT)` (the 0.5% stays as cash to
-   cover price movement on market orders). If the crypto sleeve is halted,
+2. **Targets:** let `W = 0.995 × V` (the 0.5% stays as cash to cover price
+   movement on market orders). `T(SPY) = 0.80 × W` if core is ON, else 0.
+   `T(IBIT) = 0.20 × W` if crypto is ON, else 0.
+   `T(SGOV) = W − T(SPY) − T(IBIT)`. If the crypto sleeve is halted,
    keep IBIT and the crypto sleeve's SGOV where they are and plan only the
    core sleeve.
 3. **Which symbols trade:** for each symbol, `diff = T − current value`. It
