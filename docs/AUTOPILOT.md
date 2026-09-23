@@ -145,7 +145,7 @@ Use the Robinhood connector tools only:
 
 ## Step 5: Circuit breakers
 
-**Stop** with status `halted` if either of these is true:
+The run is **halted** if either of these is true:
 
 - **Intraday move:** SPY's last price is more than 5% from its
   `adjusted_previous_close`, or more than 5% from today's open.
@@ -154,10 +154,17 @@ Use the Robinhood connector tools only:
   there's no baseline, so this check passes. A deposit or withdrawal can trip
   this check or hide a real drop. If you know one happened, say so in the notes.
 
+A halted run **places no buys**, but it still sells SPY or IBIT when that
+sleeve's signal in Step 6 is OFF (below its lower band), so a crash can't trap
+the account in a falling asset. Continue to Steps 6–8 with only those sells
+planned; the proceeds stay as cash until a later run. Use status `halted` and
+name the trigger in the notes.
+
 **Crypto-only halt:** if IBIT's last price is more than 10% from its
-`adjusted_previous_close`, don't trade IBIT this run (no IBIT buys or sells,
-and leave the crypto sleeve's SGOV alone). The core sleeve still runs. Note
-`crypto halted` in the log.
+`adjusted_previous_close`, the crypto sleeve places no buys this run, and no
+sells except selling IBIT when the crypto signal is OFF. Leave the crypto
+sleeve's SGOV alone. The core sleeve runs normally. Note `crypto halted` in
+the log.
 
 ## Step 6: Signals
 
@@ -179,6 +186,10 @@ SGOV.
 
 ## Step 7: Plan the orders
 
+Do the arithmetic in Steps 4–7 (SMA cross-checks, signals, targets, order
+sizes) with a short Python script, not by hand, and print the inputs and
+results so they can go in the log.
+
 The strategy only uses **investable cash**
 (`min(cash, unleveraged_buying_power)`) plus its SPY, IBIT and SGOV
 positions. It never uses margin or other positions.
@@ -188,9 +199,8 @@ positions. It never uses margin or other positions.
 2. **Targets:** let `W = 0.995 × V` (the 0.5% stays as cash to cover price
    movement on market orders). `T(SPY) = 0.80 × W` if core is ON, else 0.
    `T(IBIT) = 0.20 × W` if crypto is ON, else 0.
-   `T(SGOV) = W − T(SPY) − T(IBIT)`. If the crypto sleeve is halted,
-   keep IBIT and the crypto sleeve's SGOV where they are and plan only the
-   core sleeve.
+   `T(SGOV) = W − T(SPY) − T(IBIT)`. If the run or the crypto sleeve is
+   halted (Step 5), plan only the sells Step 5 allows.
 3. **Which symbols trade:** for each symbol, `diff = T − current value`. It
    trades only if its target is 0 and it is held (sell all), or if `|diff|`
    is more than the rebalance threshold (max($5, 5% of V)).
