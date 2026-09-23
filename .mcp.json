@@ -6,3 +6,13 @@
     }
   }
 }
+
+.claude/settings.json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
