@@ -17,7 +17,8 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
    the scheduled SPY/SGOV autopilot Routine to place orders without
    per-trade approval, and only as defined in @docs/AUTOPILOT.md: account
-   ••••7879 only, SPY and SGOV only, at most 2 orders per run,
+   ••••7879 only, SPY, IBIT and SGOV only (IBIT added 2026-09-23), at most
+   2 orders per run,
    `review_equity_order` first and abort on any alert. This exception
    applies only inside a run started by that Routine. It never applies in
    an interactive session, to any other symbol or account, or to an order
@@ -29,8 +30,9 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    at 10% of equity and any single sector at 25%.
    **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
    the autopilot Routine in @docs/AUTOPILOT.md to hold up to 100% of the
-   ••••7879 account's investable cash in SPY or SGOV, sized as that file
-   defines, without the per-trade stop sizing or the 10%/25% caps.
+   ••••7879 account's investable cash in SPY, IBIT and SGOV, sized as that
+   file defines (at most 80% SPY and 20% IBIT), without the per-trade stop
+   sizing or the 10%/25% caps.
 5. **Every position has an exit plan before entry**: a stop level (usually
    2 × ATR(14) below entry for longs) and a reason to take profit or exit.
 6. **Circuit breakers.** If the account is down 3% on the day or 10% from its
