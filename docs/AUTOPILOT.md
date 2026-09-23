@@ -25,7 +25,10 @@ does not reliably add return, and it lags at turning points.
 ## How this relates to CLAUDE.md
 
 CLAUDE.md rules 1, 3, 7, 9, and 10 apply as written. The market orders here
-are regular-hours only and have a spread check, so they meet rule 3. For
+are regular-hours only and have a spread check, so they meet rule 3. Rule 8
+is covered without extra calls: SPY, IBIT and SGOV are ETFs with no earnings
+dates, and `review_equity_order` reports halts and trading restrictions as
+alerts, which abort the run (Step 8). For
 rule 5, the exit plan for every position is its band: SPY or IBIT is sold when
 a run finds it below its lower band, and the SGOV in a sleeve is sold when a
 run finds that sleeve's asset above its upper band.

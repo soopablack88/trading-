@@ -15,7 +15,7 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    plan. Place the order only after the user explicitly says yes to *that*
    order. Approval for one order does not carry over to the next.
    **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
-   the scheduled SPY/SGOV autopilot Routine to place orders without
+   the scheduled SPY/IBIT/SGOV autopilot Routine to place orders without
    per-trade approval, and only as defined in @docs/AUTOPILOT.md: account
    ••••7879 only, SPY, IBIT and SGOV only (IBIT added 2026-09-23), at most
    2 orders per run,
@@ -40,8 +40,11 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    the user says so.
    **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
    the autopilot Routine in @docs/AUTOPILOT.md to use that file's circuit
-   breakers instead of these: skip the run if SPY moves more than 5%
-   intraday, or if the account is down more than 20% since the last run.
+   breakers instead of these: if SPY moves more than 5% intraday, or the
+   account is down more than 20% since the last run, the run places no
+   buys but still sells SPY or IBIT into cash when its trend signal is off.
+   IBIT moving more than 10% halts only the IBIT sleeve the same way.
+   (Updated 2026-09-23 at the owner's request.)
 7. **No leverage beyond cash.** Don't use margin borrowing. No naked short options.
    No selling puts unless the full cash to be assigned is set aside.
 8. **Check tradability and events first.** Call `get_equity_tradability` before
