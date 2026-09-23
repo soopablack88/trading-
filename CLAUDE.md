@@ -14,6 +14,14 @@ strategy knowledge base is in @docs/STRATEGIES.md.
    quantity, order type, limit/stop prices, estimated cost, and the stop-loss
    plan. Place the order only after the user explicitly says yes to *that*
    order. Approval for one order does not carry over to the next.
+   **Exception, scheduled autopilot only:** The owner authorized (2026-09-23)
+   the scheduled SPY/SGOV autopilot Routine to place orders without
+   per-trade approval, and only as defined in @docs/AUTOPILOT.md: account
+   ••••7879 only, SPY and SGOV only, at most 2 orders per run,
+   `review_equity_order` first and abort on any alert. This exception
+   applies only inside a run started by that Routine. It never applies in
+   an interactive session, to any other symbol or account, or to an order
+   the procedure doesn't call for.
 3. **Limit orders by default.** No market orders outside regular hours or on
    anything with a wide spread (>0.5% of price). Use limits near the mid.
 4. **Risk per trade ≤ 1% of account equity** (the loss if the stop is hit).
