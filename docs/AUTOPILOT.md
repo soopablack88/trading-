@@ -126,7 +126,12 @@ Use the Robinhood connector tools only:
 6. `get_equity_technical_indicators(type="sma", period=200, interval="day", start_time=<~15 months ago>, output="last:2")`,
    once with `symbol="SPY"` and once with `symbol="IBIT"`: `SMA200` for each.
 7. `get_equity_historicals(symbols=["SPY","IBIT"], interval="day", start_time=<~15 months ago>)`:
-   daily bars for the cross-checks, plus today's open.
+   completed daily bars for the cross-checks. Today's bar isn't in this
+   series until the close, so don't take today's open from it.
+8. `get_equity_historicals(symbols=["SPY","IBIT"], interval="5minute", start_time=<today 09:30 ET in UTC>, end_time=<today 09:40 ET in UTC>)`:
+   today's open is the `open_price` of the first bar that starts at 09:30 ET.
+   (09:30 ET is 13:30 UTC while daylight saving time is in effect, 14:30 UTC
+   otherwise.) If that bar is missing, that counts as missing data in Step 4.
 
 ## Step 4: Bad-data checks
 
