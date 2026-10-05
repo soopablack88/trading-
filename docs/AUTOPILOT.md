@@ -219,9 +219,17 @@ positions. It never uses margin or other positions.
 5. **Buys:** for a symbol to buy, `dollar_amount = floor_to_cents(diff)`,
    capped at the investable cash available when the buy is reviewed. Skip a
    buy under $5.
-6. **Order cap:** put the sells first (largest first), then the buys (largest
-   first), and keep only the first 2. Write the rest in the notes as
-   `deferred`; the next run plans them again from fresh data.
+   **Cash sweep:** let `excess = investable_cash − 0.005 × V − (buys already
+   planned above)`. If `excess` is more than max($5, 1% of V), also buy
+   symbols that are under target (`diff > 0`) but inside the rebalance
+   threshold, largest shortfall first, each for
+   `floor_to_cents(min(diff, remaining excess))`. Skip a buy under $5. The
+   sweep never sells, never buys a symbol whose target is 0, and follows the
+   same halts and 2-order cap as every other buy.
+6. **Order cap:** put the sells first (largest first), then the regular buys
+   (largest first), then the cash-sweep buys (in sweep order), and keep only
+   the first 2. Write the rest in the notes as `deferred`; the next run plans
+   them again from fresh data.
 
 If nothing trades, the result is `hold`: no orders.
 
