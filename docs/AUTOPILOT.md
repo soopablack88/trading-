@@ -60,7 +60,7 @@ unaffected.
 | Order types | Buys: `type=market`, `dollar_amount`. Sells: `type=market`, `quantity` (shares). Always `market_hours=regular_hours`, `time_in_force=gfd`. |
 | Pre-trade check | `review_equity_order` before every order. **Any alert aborts the run.** |
 | Max orders | 2 per run (placed in live mode, or would-place in dry-run mode). Orders that don't fit wait for the next run. |
-| Rebalance threshold | A symbol is only traded when its target is 0 and it is held, or when it is more than max($5, 5% of the strategy value) away from its target. |
+| Rebalance threshold | A symbol is only traded when its target is 0 and it is held, or when it is more than max($5, 5% of the strategy value) away from its target. Idle cash above the 0.5% buffer is also swept into under-target symbols (Step 7, item 5). |
 | Mode | **DRY_RUN** while the ET date is on or before 2026-09-30, or whenever the control panel's `forceDryRun` is true. **LIVE** from 2026-10-01 on otherwise. |
 | Kill switch | A file named `PAUSE` at the repo root, or `paused: true` on the control panel |
 | Control panel | Artifact https://claude.ai/artifact/Gwj68Mn13QYv4h5q2Gt27S. Read and write its database with the `ArtifactData` tool (load it with ToolSearch `select:ArtifactData`). |
